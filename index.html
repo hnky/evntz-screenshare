@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
+        <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+
+        
+        <input id="room-id" value="test"/>
+        
+        <button id="open-room">
+        Share screen
+        </button>
+        
+        <button id="join-room">
+        View screen
+        </button>
+
+        <script>
+            var connection = new RTCMultiConnection();
+
+            // by default, socket.io server is assumed to be deployed on your own URL
+            //connection.socketURL = '/';
+
+            // comment-out below line if you do not have your own socket.io server
+            connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+
+            connection.socketMessageEvent = 'screen-sharing-demo';
+
+            connection.session = {
+                screen: true,
+                oneway: true
+            };
+
+            connection.sdpConstraints.mandatory = {
+                OfferToReceiveAudio: false,
+                OfferToReceiveVideo: false
+            };
+
+            // https://www.rtcmulticonnection.org/docs/iceServers/
+            // use your own TURN-server here!
+            connection.iceServers = [{
+                'urls': [
+                    'stun:stun.l.google.com:19302',
+                    'stun:stun1.l.google.com:19302',
+                    'stun:stun2.l.google.com:19302',
+                    'stun:stun.l.google.com:19302?transport=udp',
+                ]
+            }];
+
+
+            document.getElementById('open-room').onclick = function() {
+                connection.open(document.getElementById('room-id').value, function() {
+                //  showRoomURL(connection.sessionid);
+                });
+            };
+
+            document.getElementById('join-room').onclick = function() {
+                connection.sdpConstraints.mandatory = {
+                    OfferToReceiveAudio: false,
+                    OfferToReceiveVideo: true
+                };
+                connection.join(document.getElementById('room-id').value);
+            };
+        </script>
+
+    </body>
+</html>
