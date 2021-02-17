@@ -2,19 +2,31 @@
     <head>
         <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
         <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+        <link rel="stylesheet" href="getHTMLMediaElement.css">
+        <script src="getHTMLMediaElement.js"></script>
+        <style>
+                #videos-container {
+                    max-width: 800px;
+                }
+        </style>
     </head>
     <body>
 
-        
-        <input id="room-id" value="test"/>
-        
-        <button id="open-room">
-        Share screen
-        </button>
-        
-        <button id="join-room">
-        View screen
-        </button>
+        <div>
+            <input id="room-id" value="test"/>
+            
+            <button id="open-room">
+                Share screen
+            </button>
+            
+            <button id="join-room">
+                View screen
+            </button>
+        </div>
+        <hr/>
+        <div id="videos-container">
+
+        </div>
 
         <script>
             var connection = new RTCMultiConnection();
@@ -24,8 +36,10 @@
 
             // comment-out below line if you do not have your own socket.io server
             connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+            connection.videosContainer = document.getElementById('videos-container');
 
-            connection.socketMessageEvent = 'screen-sharing-demo';
+          
+            connection.socketMessageEvent = 'screen-sharing-evntz';
 
             connection.session = {
                 screen: true,
